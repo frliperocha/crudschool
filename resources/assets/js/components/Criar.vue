@@ -145,13 +145,29 @@
         },
         methods: {
             novoCadastro() {
-                let criado = {
-                    id: 2,
+                const params = {
                     nome_aluno: this.nome_aluno,
+                    data_nascimento: this.data_nascimento,
+                    serie_ingresso: this.serie_ingresso,
+                    rua: this.rua,
+                    bairro: this.bairro,
+                    numero: this.numero,
+                    complemento: this.complemento,
+                    cidade: this.cidade,
+                    estado: this.estado,
+                    cep: this.cep,
                     nome_mae: this.nome_mae,
-                    serie_ingresso: this.serie_ingresso
+                    cpf_mae: this.cpf_mae,
+                    data_pagamento: this.data_pagamento
                 };
-                this.$emit('new', criado);
+                
+                axios.post(`/escolas`, params)
+                    .then((response) => {
+                        const escola = response.data;
+                        this.$emit('new', escola);
+                    });
+                
+                
             }
         }
     }

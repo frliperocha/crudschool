@@ -44678,27 +44678,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            criados: [{
-                'id': 1,
-                'nome_aluno': 'Anne',
-                'nome_mae': 'Sarah',
-                'serie_ingresso': '9º ano'
-            }]
+            escolas: []
         };
     },
     mounted: function mounted() {
-        console.log('Component mounted.');
+        var _this = this;
+
+        axios.get('/escolas').then(function (response) {
+            _this.escolas = response.data;
+        });
     },
 
     methods: {
-        addAluno: function addAluno(criado) {
-            this.criados.push(criado);
+        addAluno: function addAluno(escola) {
+            this.escolas.push(escola);
         },
-        updAluno: function updAluno(index, criado) {
-            this.criados[index] = criado;
+        updAluno: function updAluno(index, escola) {
+            this.escolas[index] = escola;
         },
         delAluno: function delAluno(index) {
-            this.criados.splice(index, 1);
+            this.escolas.splice(index, 1);
         }
     }
 });
@@ -44732,10 +44731,10 @@ var render = function() {
             [
               _vm._m(0),
               _vm._v(" "),
-              _vm._l(_vm.criados, function(criado, index) {
+              _vm._l(_vm.escolas, function(escola, index) {
                 return _c("alunos", {
-                  key: criado.id,
-                  attrs: { criado: criado },
+                  key: escola.id,
+                  attrs: { escola: escola },
                   on: {
                     update: function($event) {
                       var i = arguments.length,
@@ -44988,13 +44987,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         novoCadastro: function novoCadastro() {
-            var criado = {
-                id: 2,
+            var _this = this;
+
+            var params = {
                 nome_aluno: this.nome_aluno,
+                data_nascimento: this.data_nascimento,
+                serie_ingresso: this.serie_ingresso,
+                rua: this.rua,
+                bairro: this.bairro,
+                numero: this.numero,
+                complemento: this.complemento,
+                cidade: this.cidade,
+                estado: this.estado,
+                cep: this.cep,
                 nome_mae: this.nome_mae,
-                serie_ingresso: this.serie_ingresso
+                cpf_mae: this.cpf_mae,
+                data_pagamento: this.data_pagamento
             };
-            this.$emit('new', criado);
+
+            axios.post('/escolas', params).then(function (response) {
+                var escola = response.data;
+                _this.$emit('new', escola);
+            });
         }
     }
 });
@@ -45709,7 +45723,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['criado'],
+    props: ['escola'],
     data: function data() {
         return {
             editMode: false
@@ -45723,12 +45737,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         editAluno: function editAluno() {
             this.editMode = true;
         },
-        updateAluno: function updateAluno() {
-            this.editMode = false;
-            this.$emit('update', criado);
-        },
         deleteAluno: function deleteAluno() {
-            this.$emit('delete');
+            var _this = this;
+
+            axios.delete('/escolas/' + this.escola.id).then(function () {
+                _this.$emit('delete');
+            });
+        },
+        updateAluno: function updateAluno() {
+            var _this2 = this;
+
+            var params = {
+                nome_aluno: this.escola.nome_aluno,
+                data_nascimento: this.escola.data_nascimento,
+                serie_ingresso: this.escola.serie_ingresso,
+                rua: this.escola.rua,
+                bairro: this.escola.bairro,
+                numero: this.escola.numero,
+                complemento: this.escola.complemento,
+                cidade: this.escola.cidade,
+                estado: this.escola.estado,
+                cep: this.escola.cep,
+                nome_mae: this.escola.nome_mae,
+                cpf_mae: this.escola.cpf_mae,
+                data_pagamento: this.escola.data_pagamento
+            };
+            axios.put('/escolas/' + this.escola.id, params).then(function (response) {
+                _this2.editMode = false;
+                var escola = response.data;
+                _this2.$emit('update', escola);
+            });
         }
     }
 });
@@ -45755,19 +45793,19 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.criado.nome_aluno,
-                        expression: "criado.nome_aluno"
+                        value: _vm.escola.nome_aluno,
+                        expression: "escola.nome_aluno"
                       }
                     ],
                     staticClass: "form-control",
                     attrs: { type: "text" },
-                    domProps: { value: _vm.criado.nome_aluno },
+                    domProps: { value: _vm.escola.nome_aluno },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(_vm.criado, "nome_aluno", $event.target.value)
+                        _vm.$set(_vm.escola, "nome_aluno", $event.target.value)
                       }
                     }
                   })
@@ -45781,20 +45819,20 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.criado.data_nascimento,
-                        expression: "criado.data_nascimento"
+                        value: _vm.escola.data_nascimento,
+                        expression: "escola.data_nascimento"
                       }
                     ],
                     staticClass: "form-control",
                     attrs: { type: "date" },
-                    domProps: { value: _vm.criado.data_nascimento },
+                    domProps: { value: _vm.escola.data_nascimento },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
                         _vm.$set(
-                          _vm.criado,
+                          _vm.escola,
                           "data_nascimento",
                           $event.target.value
                         )
@@ -45815,8 +45853,8 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.criado.serie_ingresso,
-                          expression: "criado.serie_ingresso"
+                          value: _vm.escola.serie_ingresso,
+                          expression: "escola.serie_ingresso"
                         }
                       ],
                       staticClass: "form-control",
@@ -45831,7 +45869,7 @@ var render = function() {
                               return val
                             })
                           _vm.$set(
-                            _vm.criado,
+                            _vm.escola,
                             "serie_ingresso",
                             $event.target.multiple
                               ? $$selectedVal
@@ -45876,19 +45914,19 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.criado.rua,
-                        expression: "criado.rua"
+                        value: _vm.escola.rua,
+                        expression: "escola.rua"
                       }
                     ],
                     staticClass: "form-control",
                     attrs: { type: "text" },
-                    domProps: { value: _vm.criado.rua },
+                    domProps: { value: _vm.escola.rua },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(_vm.criado, "rua", $event.target.value)
+                        _vm.$set(_vm.escola, "rua", $event.target.value)
                       }
                     }
                   })
@@ -45904,19 +45942,19 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.criado.bairro,
-                        expression: "criado.bairro"
+                        value: _vm.escola.bairro,
+                        expression: "escola.bairro"
                       }
                     ],
                     staticClass: "form-control",
                     attrs: { type: "text" },
-                    domProps: { value: _vm.criado.bairro },
+                    domProps: { value: _vm.escola.bairro },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(_vm.criado, "bairro", $event.target.value)
+                        _vm.$set(_vm.escola, "bairro", $event.target.value)
                       }
                     }
                   })
@@ -45930,19 +45968,19 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.criado.numero,
-                        expression: "criado.numero"
+                        value: _vm.escola.numero,
+                        expression: "escola.numero"
                       }
                     ],
                     staticClass: "form-control",
                     attrs: { type: "number" },
-                    domProps: { value: _vm.criado.numero },
+                    domProps: { value: _vm.escola.numero },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(_vm.criado, "numero", $event.target.value)
+                        _vm.$set(_vm.escola, "numero", $event.target.value)
                       }
                     }
                   })
@@ -45958,19 +45996,19 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.criado.complemento,
-                        expression: "criado.complemento"
+                        value: _vm.escola.complemento,
+                        expression: "escola.complemento"
                       }
                     ],
                     staticClass: "form-control",
                     attrs: { type: "text" },
-                    domProps: { value: _vm.criado.complemento },
+                    domProps: { value: _vm.escola.complemento },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(_vm.criado, "complemento", $event.target.value)
+                        _vm.$set(_vm.escola, "complemento", $event.target.value)
                       }
                     }
                   })
@@ -45986,19 +46024,19 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.criado.cidade,
-                        expression: "criado.cidade"
+                        value: _vm.escola.cidade,
+                        expression: "escola.cidade"
                       }
                     ],
                     staticClass: "form-control",
                     attrs: { type: "text" },
-                    domProps: { value: _vm.criado.cidade },
+                    domProps: { value: _vm.escola.cidade },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(_vm.criado, "cidade", $event.target.value)
+                        _vm.$set(_vm.escola, "cidade", $event.target.value)
                       }
                     }
                   })
@@ -46014,8 +46052,8 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.criado.estado,
-                          expression: "criado.estado"
+                          value: _vm.escola.estado,
+                          expression: "escola.estado"
                         }
                       ],
                       staticClass: "form-control",
@@ -46030,7 +46068,7 @@ var render = function() {
                               return val
                             })
                           _vm.$set(
-                            _vm.criado,
+                            _vm.escola,
                             "estado",
                             $event.target.multiple
                               ? $$selectedVal
@@ -46109,18 +46147,18 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.criado.cep,
-                        expression: "criado.cep"
+                        value: _vm.escola.cep,
+                        expression: "escola.cep"
                       }
                     ],
                     staticClass: "form-control",
-                    domProps: { value: _vm.criado.cep },
+                    domProps: { value: _vm.escola.cep },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(_vm.criado, "cep", $event.target.value)
+                        _vm.$set(_vm.escola, "cep", $event.target.value)
                       }
                     }
                   })
@@ -46136,19 +46174,19 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.criado.nome_mae,
-                        expression: "criado.nome_mae"
+                        value: _vm.escola.nome_mae,
+                        expression: "escola.nome_mae"
                       }
                     ],
                     staticClass: "form-control",
                     attrs: { type: "text" },
-                    domProps: { value: _vm.criado.nome_mae },
+                    domProps: { value: _vm.escola.nome_mae },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(_vm.criado, "nome_mae", $event.target.value)
+                        _vm.$set(_vm.escola, "nome_mae", $event.target.value)
                       }
                     }
                   })
@@ -46162,19 +46200,19 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.criado.cpf_mae,
-                        expression: "criado.cpf_mae"
+                        value: _vm.escola.cpf_mae,
+                        expression: "escola.cpf_mae"
                       }
                     ],
                     staticClass: "form-control",
                     attrs: { type: "text" },
-                    domProps: { value: _vm.criado.cpf_mae },
+                    domProps: { value: _vm.escola.cpf_mae },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(_vm.criado, "cpf_mae", $event.target.value)
+                        _vm.$set(_vm.escola, "cpf_mae", $event.target.value)
                       }
                     }
                   })
@@ -46190,20 +46228,20 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.criado.data_pagamento,
-                        expression: "criado.data_pagamento"
+                        value: _vm.escola.data_pagamento,
+                        expression: "escola.data_pagamento"
                       }
                     ],
                     staticClass: "form-control",
                     attrs: { type: "date" },
-                    domProps: { value: _vm.criado.data_pagamento },
+                    domProps: { value: _vm.escola.data_pagamento },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
                         _vm.$set(
-                          _vm.criado,
+                          _vm.escola,
                           "data_pagamento",
                           $event.target.value
                         )
@@ -46215,12 +46253,12 @@ var render = function() {
             ])
           ])
         : _c("div", { staticClass: "panel-body" }, [
-            _c("td", [_vm._v(_vm._s(_vm.criado.nome_aluno))])
+            _c("td", [_vm._v(_vm._s(_vm.escola.nome_aluno))])
           ]),
       _vm._v(" "),
-      _c("td", [_vm._v(_vm._s(_vm.criado.nome_mae))]),
+      _c("td", [_vm._v(_vm._s(_vm.escola.nome_mae))]),
       _vm._v(" "),
-      _c("td", [_vm._v(_vm._s(_vm.criado.serie_ingresso))]),
+      _c("td", [_vm._v(_vm._s(_vm.escola.serie_ingresso))]),
       _vm._v(" "),
       _c("td", [
         _c(

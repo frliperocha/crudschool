@@ -8,18 +8,18 @@
                                         <div class="row">
                                             <div class="form-group col-md-8">
                                                 <label>Nome completo do aluno</label>
-                                                <input type="text" class="form-control" v-model="criado.nome_aluno">
+                                                <input type="text" class="form-control" v-model="escola.nome_aluno">
                                             </div>
                                         
                                             <div class="form-group col-md-4">
                                                 <label>Data de nascimento</label>
-                                                <input type="date" class="form-control" v-model="criado.data_nascimento">
+                                                <input type="date" class="form-control" v-model="escola.data_nascimento">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="form-group col-md-4">
                                                 <label>Série de Ingresso</label>
-                                                <select class="form-control" v-model="criado.serie_ingresso">
+                                                <select class="form-control" v-model="escola.serie_ingresso">
                                                     <option selected>Escolher...</option>
                                                     <option>1º ano</option>
                                                     <option>2º ano</option>
@@ -36,33 +36,33 @@
                                         <div class="row">
                                             <div class="form-group col-md-8">
                                                 <label>Rua</label>
-                                                <input type="text" class="form-control" v-model="criado.rua">
+                                                <input type="text" class="form-control" v-model="escola.rua">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="form-group col-md-8">
                                                 <label>Bairro</label>
-                                                <input type="text" class="form-control" v-model="criado.bairro">
+                                                <input type="text" class="form-control" v-model="escola.bairro">
                                             </div>
                                             <div class="form-group col-md-4">
                                                 <label>Número</label>
-                                                <input type="number" class="form-control" v-model="criado.numero">
+                                                <input type="number" class="form-control" v-model="escola.numero">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="form-group col-md-8">
                                                 <label>Complemento</label>
-                                                <input type="text" class="form-control" v-model="criado.complemento">
+                                                <input type="text" class="form-control" v-model="escola.complemento">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="form-group col-md-6">
                                                 <label>Cidade</label>
-                                                <input type="text" class="form-control" v-model="criado.cidade">
+                                                <input type="text" class="form-control" v-model="escola.cidade">
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label>Estado</label>
-                                                <select class="form-control" v-model="criado.estado">
+                                                <select class="form-control" v-model="escola.estado">
                                                     <option selected>Escolher...</option>
                                                     <option>Acre</option>
                                                     <option>Alagoas</option>
@@ -95,32 +95,32 @@
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label>CEP</label>
-                                                <input class="form-control" v-model="criado.cep">
+                                                <input class="form-control" v-model="escola.cep">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="form-group col-md-8">
                                                 <label>Nome completo da mãe</label>
-                                                <input type="text" class="form-control" v-model="criado.nome_mae">
+                                                <input type="text" class="form-control" v-model="escola.nome_mae">
                                             </div>
                                             <div class="form-group col-md-4">
                                                 <label>CPF da mãe</label>
-                                                <input type="text" class="form-control" v-model="criado.cpf_mae">
+                                                <input type="text" class="form-control" v-model="escola.cpf_mae">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="form-group col-md-4">
                                                 <label>Pagamento de mensalidade</label>
-                                                <input type="date" class="form-control" v-model="criado.data_pagamento">
+                                                <input type="date" class="form-control" v-model="escola.data_pagamento">
                                             </div>
                                         </div>
                                     </form>
                                 </div>
                                 <div v-else class="panel-body">
-                                <td>{{ criado.nome_aluno }}</td>
+                                <td>{{ escola.nome_aluno }}</td>
                                 </div>
-                                <td>{{ criado.nome_mae }}</td>
-                                <td>{{ criado.serie_ingresso }}</td>
+                                <td>{{ escola.nome_mae }}</td>
+                                <td>{{ escola.serie_ingresso }}</td>
                                 
                                 <td>
                                     <button type="button" class="btn btn-info btn-sm">Ver</button>
@@ -137,7 +137,7 @@
 
 <script>
     export default {
-        props: ['criado'],
+        props: ['escola'],
         data() {
             return {
                 editMode: false
@@ -150,12 +150,33 @@
             editAluno(){
                 this.editMode = true;
             },
-            updateAluno(){
-                this.editMode = false;
-                this.$emit('update', criado);
+                deleteAluno(){
+                    axios.delete(`/escolas/${this.escola.id}`).then(() => {
+                    this.$emit('delete');
+                });
             },
-            deleteAluno(){
-                this.$emit('delete');
+
+            updateAluno(){
+                const params = {
+                    nome_aluno: this.escola.nome_aluno,
+                    data_nascimento: this.escola.data_nascimento,
+                    serie_ingresso: this.escola.serie_ingresso,
+                    rua: this.escola.rua,
+                    bairro: this.escola.bairro,
+                    numero: this.escola.numero,
+                    complemento: this.escola.complemento,
+                    cidade: this.escola.cidade,
+                    estado: this.escola.estado,
+                    cep: this.escola.cep,
+                    nome_mae: this.escola.nome_mae,
+                    cpf_mae: this.escola.cpf_mae,
+                    data_pagamento: this.escola.data_pagamento
+                };
+                axios.put(`/escolas/${this.escola.id}`, params).then((response) => {
+                    this.editMode = false;
+                    const escola = response.data;
+                    this.$emit('update', escola);
+                });
             }
         }
     }

@@ -20,9 +20,9 @@
                             <th scope="col">Ações</th>
                             </tr>
                         </thead>
-                        <alunos v-for="(criado,index) in criados"
-                         :key="criado.id" 
-                         :criado="criado"
+                        <alunos v-for="(escola,index) in escolas"
+                         :key="escola.id" 
+                         :escola="escola"
                          @update="updAluno(index, ...arguments)" 
                          @delete="delAluno (index)">
                          </alunos>
@@ -40,27 +40,24 @@
     export default {
         data () {
             return {
-                criados: [{
-                    'id': 1,
-                    'nome_aluno': 'Anne',
-                    'nome_mae': 'Sarah',
-                    'serie_ingresso': '9º ano',
-                }]
+                escolas: []
             }
         },
 
         mounted() {
-            console.log('Component mounted.')
+            axios.get('/escolas').then((response) => {
+                this.escolas = response.data;
+            });
         },
         methods: {
-            addAluno(criado) {
-                this.criados.push(criado);
+            addAluno(escola) {
+                this.escolas.push(escola);
             },
-            updAluno(index, criado){
-                this.criados[index] = criado;
+            updAluno(index, escola){
+                this.escolas[index] = escola;
             },
             delAluno(index){
-                this.criados.splice(index, 1);
+                this.escolas.splice(index, 1);
             }
         }
     }

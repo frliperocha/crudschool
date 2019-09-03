@@ -9,4 +9,4 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-Route::apiResource('escolas', 'EscolaController@index');
+Route::apiResource('escolas', 'EscolaController');
