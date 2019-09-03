@@ -1,5 +1,10 @@
 
 require('./bootstrap');
+require('./font-awesome');
+
+import Vue from 'vue'
+import Vuelidate from 'vuelidate'
+Vue.use(Vuelidate)
 
 window.Vue = require('vue');
 

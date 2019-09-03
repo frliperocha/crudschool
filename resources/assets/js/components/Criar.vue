@@ -7,18 +7,18 @@
                     <div class="row">
                         <div class="form-group col-md-8">
                             <label for="nomeCompleto">Nome completo do aluno</label>
-                            <input type="text" class="form-control" id="nomeCompleto" v-model="nome_aluno">
+                            <input type="text" class="form-control" id="nomeCompleto" v-model="nome_aluno" required>
                         </div>
                     
                         <div class="form-group col-md-4">
                             <label for="dataNascimento">Data de nascimento</label>
-                            <input type="date" class="form-control" id="dateNascimento" v-model="data_nascimento">
+                            <input type="date" class="form-control" id="dateNascimento" v-model="data_nascimento" required>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-4">
                             <label for="serieIngresso">Série de Ingresso</label>
-                            <select id="serieIngresso" class="form-control" v-model="serie_ingresso">
+                            <select id="serieIngresso" class="form-control" v-model="serie_ingresso" required>
                                 <option selected>Escolher...</option>
                                 <option>1º ano</option>
                                 <option>2º ano</option>
@@ -35,33 +35,33 @@
                     <div class="row">
                         <div class="form-group col-md-8">
                             <label for="enderecoRua">Rua</label>
-                            <input type="text" class="form-control" id="enderecoRua" v-model="rua">
+                            <input type="text" class="form-control" id="enderecoRua" v-model="rua" required>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-8">
                             <label for="enderecoBairro">Bairro</label>
-                            <input type="text" class="form-control" id="enderecoBairro" v-model="bairro">
+                            <input type="text" class="form-control" id="enderecoBairro" v-model="bairro" required>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="enderecoNumero">Número</label>
-                            <input type="number" class="form-control" id="enderecoNumero" v-model="numero">
+                            <input type="number" class="form-control" id="enderecoNumero" v-model="numero" required>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-8">
                             <label for="enderecoCompl">Complemento</label>
-                            <input type="text" class="form-control" id="enderecoCompl" v-model="complemento">
+                            <input type="text" class="form-control" id="enderecoCompl" v-model="complemento" required>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label for="enderecoCidade">Cidade</label>
-                            <input type="text" class="form-control" id="enderecoCidade" v-model="cidade">
+                            <input type="text" class="form-control" id="enderecoCidade" v-model="cidade" required>
                         </div>
                         <div class="form-group col-md-3">
                             <label for="enderecoEstado">Estado</label>
-                            <select id="enderecoEstado" class="form-control" v-model="estado">
+                            <select id="enderecoEstado" class="form-control" v-model="estado" required>
                                 <option selected>Escolher...</option>
                                 <option>Acre</option>
                                 <option>Alagoas</option>
@@ -94,23 +94,23 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="enderecoCEP">CEP</label>
-                            <input class="form-control" id="enderecoCEP" v-model="cep">
+                            <input class="form-control" id="enderecoCEP" pattern= "\d{5}-\d{3}" title="Digite um CEP no formato: xxxxx-xxx" v-model="cep" required>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-8">
                             <label for="nomeMae">Nome completo da mãe</label>
-                            <input type="text" class="form-control" id="nomeMae" v-model="nome_mae">
+                            <input type="text" class="form-control" id="nomeMae" v-model="nome_mae" required>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="cpfMae">CPF da mãe</label>
-                            <input type="text" class="form-control" id="cpfMae" v-model="cpf_mae">
+                            <input type="text" class="form-control" id="cpfMae" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" title="Digite um CPF no formato: xxx.xxx.xxx-xx" v-model="cpf_mae" required>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-4">
                             <label for="dataPagamento">Pagamento de mensalidade</label>
-                            <input type="date" class="form-control" id="dataPagamento" v-model="data_pagamento">
+                            <input type="date" class="form-control" id="dataPagamento" v-model="data_pagamento" required>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Criar cadastro</button>
@@ -122,6 +122,8 @@
 </template>
 
 <script>
+    import { required, minLength, between } from 'vuelidate/lib/validators'
+
     export default {
         data() {
             return {
@@ -143,6 +145,15 @@
         mounted() {
             console.log('Component mounted.')
         },
+        validations: {
+    name: {
+      required,
+      minLength: minLength(4)
+    },
+    age: {
+      between: between(20, 30)
+    }
+  },
         methods: {
             novoCadastro() {
                 const params = {

@@ -8,18 +8,18 @@
                                         <div class="row">
                                             <div class="form-group col-md-8">
                                                 <label>Nome completo do aluno</label>
-                                                <input type="text" class="form-control" v-model="escola.nome_aluno">
+                                                <input type="text" class="form-control" v-model="escola.nome_aluno" required>
                                             </div>
                                         
                                             <div class="form-group col-md-4">
                                                 <label>Data de nascimento</label>
-                                                <input type="date" class="form-control" v-model="escola.data_nascimento">
+                                                <input type="date" class="form-control" v-model="escola.data_nascimento" required>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="form-group col-md-4">
                                                 <label>Série de Ingresso</label>
-                                                <select class="form-control" v-model="escola.serie_ingresso">
+                                                <select class="form-control" v-model="escola.serie_ingresso" required>
                                                     <option selected>Escolher...</option>
                                                     <option>1º ano</option>
                                                     <option>2º ano</option>
@@ -36,33 +36,33 @@
                                         <div class="row">
                                             <div class="form-group col-md-8">
                                                 <label>Rua</label>
-                                                <input type="text" class="form-control" v-model="escola.rua">
+                                                <input type="text" class="form-control" v-model="escola.rua" required>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="form-group col-md-8">
                                                 <label>Bairro</label>
-                                                <input type="text" class="form-control" v-model="escola.bairro">
+                                                <input type="text" class="form-control" v-model="escola.bairro" required>
                                             </div>
                                             <div class="form-group col-md-4">
                                                 <label>Número</label>
-                                                <input type="number" class="form-control" v-model="escola.numero">
+                                                <input type="number" class="form-control" v-model="escola.numero" required>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="form-group col-md-8">
                                                 <label>Complemento</label>
-                                                <input type="text" class="form-control" v-model="escola.complemento">
+                                                <input type="text" class="form-control" v-model="escola.complemento" required>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="form-group col-md-6">
                                                 <label>Cidade</label>
-                                                <input type="text" class="form-control" v-model="escola.cidade">
+                                                <input type="text" class="form-control" v-model="escola.cidade" required>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label>Estado</label>
-                                                <select class="form-control" v-model="escola.estado">
+                                                <select class="form-control" v-model="escola.estado" required>
                                                     <option selected>Escolher...</option>
                                                     <option>Acre</option>
                                                     <option>Alagoas</option>
@@ -95,23 +95,24 @@
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label>CEP</label>
-                                                <input class="form-control" v-model="escola.cep">
+                                                <input class="form-control" pattern= "\d{5}-\d{3}" title="Digite um CEP no formato: xxxxx-xxx" v-model="escola.cep" required>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="form-group col-md-8">
                                                 <label>Nome completo da mãe</label>
-                                                <input type="text" class="form-control" v-model="escola.nome_mae">
+                                                <input type="text" class="form-control" v-model="escola.nome_mae" required>
                                             </div>
                                             <div class="form-group col-md-4">
                                                 <label>CPF da mãe</label>
-                                                <input type="text" class="form-control" v-model="escola.cpf_mae">
+                                                <input type="text" class="form-control" pattern="\d{3}\.\d{3}\.\d{3}-\d{2} " title="Digite um CPF no formato: xxx.xxx.xxx-xx"
+                                                 v-model="escola.cpf_mae" required>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="form-group col-md-4">
                                                 <label>Pagamento de mensalidade</label>
-                                                <input type="date" class="form-control" v-model="escola.data_pagamento">
+                                                <input type="date" class="form-control" v-model="escola.data_pagamento" required>
                                             </div>
                                         </div>
                                     </form>
@@ -123,10 +124,10 @@
                                 <td>{{ escola.serie_ingresso }}</td>
                                 
                                 <td>
-                                    <button type="button" class="btn btn-info btn-sm">Ver</button>
-                                    <button v-if="editMode" type="button" class="btn btn-success btn-sm" v-on:click="updateAluno()">Salvar</button>
-                                    <button v-else type="button" class="btn btn-primary btn-sm" v-on:click="editAluno()">Editar</button>
-                                    <button type="button" class="btn btn-danger btn-sm" v-on:click="deleteAluno()">Remover</button>
+                                    <!-- <button type="button" class="btn btn-info btn-sm">Ver</button> -->
+                                    <button v-if="editMode" type="button" class="btn btn-success btn" v-on:click="updateAluno()"><i class="fas fa-edit"></i></button>
+                                    <button v-else type="button" class="btn btn-primary btn" v-on:click="editAluno()"><i class="fas fa-edit"></i></button>
+                                    <button type="button" class="btn btn-danger btn" v-on:click="deleteAluno()"><i class="fas fa-trash-alt"></i></button>
                                 </td>
                             </tr>
                         </tbody>
